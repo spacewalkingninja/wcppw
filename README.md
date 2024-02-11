@@ -1,1 +1,1 @@
-# AudioCraft model implementatnion for DeSota (Research only model for now)
+# whisper cpp windows model implementatnion for DeSota 
