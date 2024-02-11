@@ -49,20 +49,22 @@ SERV_CONF_PATH = os.path.join(CONFIG_PATH, "services.config.yaml")
 # DeSOTA Funcs [END]
 #SET FOR TRANSFORMERS ENV::
 ENV_PATH = os.path.join(DESOTA_ROOT_PATH,"Portables","Transformers")
+FFMPEG = os.path.join(DESOTA_ROOT_PATH,"env","Library","bin","ffmpeg.exe")
+FFPROBE = os.path.join(DESOTA_ROOT_PATH,"env","Library","bin","ffprobe.exe")
 
 
 def trim_sound_file(soundfile, trim_file, tmax):
     # Trim the input sound file to a maximum length of 30 seconds
     trimmed_file = trim_file # f"trimmed_{soundfile}"
     #ffmpeg -i file.mp3 -ar 16000 -ac 1 -b:a 96K -acodec pcm_s16le file.wav
-    subprocess.check_call(f'ffmpeg -i {soundfile} -ar 16000 -ac 1 -b:a 96K -acodec pcm_s16le -y {trimmed_file}', shell=True)
+    subprocess.check_call(f'{FFMPEG} -i {soundfile} -ar 16000 -ac 1 -b:a 96K -acodec pcm_s16le -y {trimmed_file}', shell=True)
     #subprocess.check_call(f'ffmpeg -i {soundfile} -t {tmax} -y {trimmed_file}', shell=True)
     print(f"Trimmed sound file saved as: {trimmed_file}")
     return trimmed_file
 
 def extract_sound_length(soundfile):
     # Extract the length of the sound file in seconds
-    result = subprocess.check_output(f'ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {soundfile}', shell=True)
+    result = subprocess.check_output(f'{FFPROBE} -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {soundfile}', shell=True)
     length = int(float(result))
     print(f"Sound file length: {length} seconds")
     return length
